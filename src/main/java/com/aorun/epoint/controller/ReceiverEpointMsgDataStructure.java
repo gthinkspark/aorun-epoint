@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 @Component
 @RabbitListener(queues = RabbitConfig.epointMsgDataStructureQueue)
@@ -53,14 +54,14 @@ public class ReceiverEpointMsgDataStructure {
         }
         if(obtainScoreRate==1){//1-只能添加有一次
             //判断是否添加过
-            WorkerEpointRecord workerEpointRecord =  workerEpointRecordService.findUniqueRecord(workerId,epointConfigCode);//查找工会会员ID某个epointConfigCode是否添加过
-            if(workerEpointRecord==null){//可以添加
+            List<WorkerEpointRecord> workerEpointRecordList =  workerEpointRecordService.findUniqueRecord(workerId,epointConfigCode);//查找工会会员ID某个epointConfigCode是否添加过
+            if(workerEpointRecordList==null){//可以添加
                 this.saveEpointInfo(title,workerId,epointConfigCode,score,bizUniqueSignCode,msgId,statisticsType);
             }
         }else if(obtainScoreRate==2){//2-每日添加一次
             //判断是否添加过
-            WorkerEpointRecord workerEpointRecord = workerEpointRecordService.findTodayUniqueRecord(workerId,epointConfigCode);//查找工会会员ID某个epointConfigCode当天是否添加过
-            if(workerEpointRecord==null){//可以添加
+            List<WorkerEpointRecord> workerEpointRecordList = workerEpointRecordService.findTodayUniqueRecord(workerId,epointConfigCode);//查找工会会员ID某个epointConfigCode当天是否添加过
+            if(workerEpointRecordList==null){//可以添加
                 this.saveEpointInfo(title,workerId,epointConfigCode,score,bizUniqueSignCode,msgId,statisticsType);
             }
         }else if(obtainScoreRate==3){//每日不限次数添加一次
@@ -76,8 +77,8 @@ public class ReceiverEpointMsgDataStructure {
 
         //判断  workerId,epointConfigCode,bizUniqueSignCode
         if (bizUniqueSignCode != null && !bizUniqueSignCode.equals("")) {
-            WorkerEpointRecord _workerEpointRecord = workerEpointRecordService.findUniqueRecordByBizUniqueSignCode(workerId, epointConfigCode, bizUniqueSignCode);
-            if (_workerEpointRecord == null) {
+            List<WorkerEpointRecord> workerEpointRecordList = workerEpointRecordService.findUniqueRecordByBizUniqueSignCode(workerId, epointConfigCode, bizUniqueSignCode);
+            if (workerEpointRecordList == null) {
                 this.save(title,workerId,epointConfigCode,score,bizUniqueSignCode,msgId,statisticsType);
             }
         }else{

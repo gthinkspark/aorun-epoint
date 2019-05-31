@@ -46,16 +46,16 @@ public interface WorkerEpointRecordService {
 
 
     //查找工会会员ID某个epointConfigCode是否添加过
-    WorkerEpointRecord findUniqueRecord(Long workerId,String epointConfigCode);
+    List<WorkerEpointRecord>  findUniqueRecord(Long workerId,String epointConfigCode);
 
     //查找工会会员ID某个epointConfigCode当天是否添加过
-    WorkerEpointRecord findTodayUniqueRecord(Long workerId,String epointConfigCode);
+    List<WorkerEpointRecord> findTodayUniqueRecord(Long workerId,String epointConfigCode);
 
 
     List<WorkerEpointRecord> findworkerEpointRecordByPage(Long workerId, Integer pageIndex, Integer pageSize);
 
     //查找工会会员ID,epointConfigCode,bizUniqueSignCode查找唯一记录
-    WorkerEpointRecord findUniqueRecordByBizUniqueSignCode(Long workerId,String epointConfigCode,String bizUniqueSignCode);
+    List<WorkerEpointRecord>  findUniqueRecordByBizUniqueSignCode(Long workerId,String epointConfigCode,String bizUniqueSignCode);
 
 
 

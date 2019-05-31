@@ -18,14 +18,14 @@ public interface WorkerEpointRecordMapper {
 
     int updateByPrimaryKey(WorkerEpointRecord record);
 
-    WorkerEpointRecord findUniqueRecord(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode);
+    List<WorkerEpointRecord>  findUniqueRecord(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode);
 
-    WorkerEpointRecord findTodayUniqueRecord(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode);
+    List<WorkerEpointRecord>  findTodayUniqueRecord(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode);
 
     List<WorkerEpointRecord> findworkerEpointRecordByPage(@Param("workerId") Long workerId,@Param("start") Integer start, @Param("limit") Integer limit);
 
 
-    WorkerEpointRecord findUniqueRecordByBizUniqueSignCode(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode,@Param("bizUniqueSignCode") String bizUniqueSignCode);
+    List<WorkerEpointRecord>  findUniqueRecordByBizUniqueSignCode(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode,@Param("bizUniqueSignCode") String bizUniqueSignCode);
 
 
 }

@@ -45,12 +45,12 @@ public class WorkerEpointRecordServiceImpl implements WorkerEpointRecordService 
     }
 
     @Override
-    public WorkerEpointRecord findUniqueRecord(Long workerId, String epointConfigCode) {
+    public  List<WorkerEpointRecord>  findUniqueRecord(Long workerId, String epointConfigCode) {
         return workerEpointRecordMapper.findUniqueRecord(workerId,epointConfigCode);
     }
 
     @Override
-    public WorkerEpointRecord findTodayUniqueRecord(Long workerId, String epointConfigCode) {
+    public  List<WorkerEpointRecord>  findTodayUniqueRecord(Long workerId, String epointConfigCode) {
         return workerEpointRecordMapper.findTodayUniqueRecord(workerId,epointConfigCode);
     }
 
@@ -64,7 +64,7 @@ public class WorkerEpointRecordServiceImpl implements WorkerEpointRecordService 
     }
 
     @Override
-    public WorkerEpointRecord findUniqueRecordByBizUniqueSignCode(Long workerId, String epointConfigCode, String bizUniqueSignCode) {
+    public  List<WorkerEpointRecord>  findUniqueRecordByBizUniqueSignCode(Long workerId, String epointConfigCode, String bizUniqueSignCode) {
         return workerEpointRecordMapper.findUniqueRecordByBizUniqueSignCode(workerId,epointConfigCode,bizUniqueSignCode);
     }
 
