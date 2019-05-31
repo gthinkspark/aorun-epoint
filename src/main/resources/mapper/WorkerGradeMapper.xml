@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aorun.epoint.dao.WorkerGradeMapper">
+  <resultMap id="BaseResultMap" type="com.aorun.epoint.model.WorkerGrade">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="worker_id" jdbcType="BIGINT" property="workerId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
+    <result column="certificate_code" jdbcType="VARCHAR" property="certificateCode" />
+    <result column="certificate_name" jdbcType="VARCHAR" property="certificateName" />
+    <result column="obtain_score" jdbcType="INTEGER" property="obtainScore" />
+    <result column="materials_urls" jdbcType="VARCHAR" property="materialsUrls" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="grade_type_id" jdbcType="INTEGER" property="gradeTypeId" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_readed" jdbcType="INTEGER" property="isReaded" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, worker_id, name, telephone, id_card, company_name, bank_card, certificate_code, 
+    certificate_name, obtain_score, materials_urls, status, grade_type_id, fail_reason, create_time,
+    update_time, is_readed
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_worker_grade
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_worker_grade
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.aorun.epoint.model.WorkerGrade">
+    insert into t_worker_grade (id, worker_id, name, 
+      telephone, id_card, company_name, 
+      bank_card, certificate_code, certificate_name, 
+      obtain_score, materials_urls, status, grade_type_id,
+      fail_reason, create_time, update_time, 
+      is_readed)
+    values (#{id,jdbcType=BIGINT}, #{workerId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, 
+      #{bankCard,jdbcType=VARCHAR}, #{certificateCode,jdbcType=VARCHAR}, #{certificateName,jdbcType=VARCHAR}, 
+      #{obtainScore,jdbcType=INTEGER}, #{materialsUrls,jdbcType=VARCHAR}, 1,#{gradeTypeId,jdbcType=INTEGER},
+      #{failReason,jdbcType=VARCHAR},  now(),now(),
+      #{isReaded,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aorun.epoint.model.WorkerGrade">
+    insert into t_worker_grade
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="workerId != null">
+        worker_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="bankCard != null">
+        bank_card,
+      </if>
+      <if test="certificateCode != null">
+        certificate_code,
+      </if>
+      <if test="certificateName != null">
+        certificate_name,
+      </if>
+      <if test="obtainScore != null">
+        obtain_score,
+      </if>
+      <if test="materialsUrls != null">
+        materials_urls,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="gradeTypeId != null">
+        grade_type_id,
+      </if>
+      <if test="failReason != null">
+        fail_reason,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isReaded != null">
+        is_readed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="workerId != null">
+        #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateCode != null">
+        #{certificateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateName != null">
+        #{certificateName,jdbcType=VARCHAR},
+      </if>
+      <if test="obtainScore != null">
+        #{obtainScore,jdbcType=INTEGER},
+      </if>
+      <if test="materialsUrls != null">
+        #{materialsUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="gradeTypeId != null">
+        #{gradeTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="failReason != null">
+        #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isReaded != null">
+        #{isReaded,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aorun.epoint.model.WorkerGrade">
+    update t_worker_grade
+    <set>
+      <if test="workerId != null">
+        worker_id = #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateCode != null">
+        certificate_code = #{certificateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateName != null">
+        certificate_name = #{certificateName,jdbcType=VARCHAR},
+      </if>
+      <if test="obtainScore != null">
+        obtain_score = #{obtainScore,jdbcType=INTEGER},
+      </if>
+      <if test="materialsUrls != null">
+        materials_urls = #{materialsUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="gradeTypeId != null">
+        grade_type_id = #{gradeTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isReaded != null">
+        is_readed = #{isReaded,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.aorun.epoint.model.WorkerGrade">
+    update t_worker_grade
+    set worker_id = #{workerId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      bank_card = #{bankCard,jdbcType=VARCHAR},
+      certificate_code = #{certificateCode,jdbcType=VARCHAR},
+      certificate_name = #{certificateName,jdbcType=VARCHAR},
+      obtain_score = #{obtainScore,jdbcType=INTEGER},
+      materials_urls = #{materialsUrls,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      grade_type_id = #{gradeTypeId,jdbcType=INTEGER},
+      fail_reason = #{failReason,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_readed = #{isReaded,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="getWorkerGradeListByWorkerId" resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List"/>
+  from t_worker_grade
+  where worker_id = #{workerId} and grade_type_id = #{gradeTypeId}
+  order by create_time desc
+  <if test="start!=null and limit!=null ">
+    limit #{start},#{limit}
+  </if>
+</select>
+
+
+</mapper>

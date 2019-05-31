@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aorun.epoint.dao.WorkerMsgProduceRecordMapper">
+  <resultMap id="BaseResultMap" type="com.aorun.epoint.model.WorkerMsgProduceRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="worker_id" jdbcType="BIGINT" property="workerId" />
+    <result column="msg_unique_id" jdbcType="VARCHAR" property="msgUniqueId" />
+    <result column="msg_type" jdbcType="INTEGER" property="msgType" />
+    <result column="epoint_config_code" jdbcType="VARCHAR" property="epointConfigCode" />
+    <result column="other_param" jdbcType="VARCHAR" property="otherParam" />
+    <result column="biz_unique_sign_code" jdbcType="VARCHAR" property="bizUniqueSignCode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, worker_id, msg_unique_id, msg_type, epoint_config_code, other_param, biz_unique_sign_code, 
+    status, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_worker_msg_produce_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_worker_msg_produce_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.aorun.epoint.model.WorkerMsgProduceRecord">
+    insert into t_worker_msg_produce_record (id, worker_id, msg_unique_id, 
+      msg_type, epoint_config_code, other_param, 
+      biz_unique_sign_code, status, remark
+      )
+    values (#{id,jdbcType=BIGINT}, #{workerId,jdbcType=BIGINT}, #{msgUniqueId,jdbcType=VARCHAR}, 
+      #{msgType,jdbcType=INTEGER}, #{epointConfigCode,jdbcType=VARCHAR}, #{otherParam,jdbcType=VARCHAR}, 
+      #{bizUniqueSignCode,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aorun.epoint.model.WorkerMsgProduceRecord">
+    insert into t_worker_msg_produce_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="workerId != null">
+        worker_id,
+      </if>
+      <if test="msgUniqueId != null">
+        msg_unique_id,
+      </if>
+      <if test="msgType != null">
+        msg_type,
+      </if>
+      <if test="epointConfigCode != null">
+        epoint_config_code,
+      </if>
+      <if test="otherParam != null">
+        other_param,
+      </if>
+      <if test="bizUniqueSignCode != null">
+        biz_unique_sign_code,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="workerId != null">
+        #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="msgUniqueId != null">
+        #{msgUniqueId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null">
+        #{msgType,jdbcType=INTEGER},
+      </if>
+      <if test="epointConfigCode != null">
+        #{epointConfigCode,jdbcType=VARCHAR},
+      </if>
+      <if test="otherParam != null">
+        #{otherParam,jdbcType=VARCHAR},
+      </if>
+      <if test="bizUniqueSignCode != null">
+        #{bizUniqueSignCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aorun.epoint.model.WorkerMsgProduceRecord">
+    update t_worker_msg_produce_record
+    <set>
+      <if test="workerId != null">
+        worker_id = #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="msgUniqueId != null">
+        msg_unique_id = #{msgUniqueId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null">
+        msg_type = #{msgType,jdbcType=INTEGER},
+      </if>
+      <if test="epointConfigCode != null">
+        epoint_config_code = #{epointConfigCode,jdbcType=VARCHAR},
+      </if>
+      <if test="otherParam != null">
+        other_param = #{otherParam,jdbcType=VARCHAR},
+      </if>
+      <if test="bizUniqueSignCode != null">
+        biz_unique_sign_code = #{bizUniqueSignCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aorun.epoint.model.WorkerMsgProduceRecord">
+    update t_worker_msg_produce_record
+    set worker_id = #{workerId,jdbcType=BIGINT},
+      msg_unique_id = #{msgUniqueId,jdbcType=VARCHAR},
+      msg_type = #{msgType,jdbcType=INTEGER},
+      epoint_config_code = #{epointConfigCode,jdbcType=VARCHAR},
+      other_param = #{otherParam,jdbcType=VARCHAR},
+      biz_unique_sign_code = #{bizUniqueSignCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

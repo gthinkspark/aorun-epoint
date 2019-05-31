@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aorun.epoint.dao.WorkerEpointLevelMapper">
+  <resultMap id="BaseResultMap" type="com.aorun.epoint.model.WorkerEpointLevel">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="level_img" jdbcType="VARCHAR" property="levelImg" />
+    <result column="level_name" jdbcType="VARCHAR" property="levelName" />
+    <result column="level_label" jdbcType="VARCHAR" property="levelLabel" />
+    <result column="score_begin" jdbcType="INTEGER" property="scoreBegin" />
+    <result column="score_end" jdbcType="INTEGER" property="scoreEnd" />
+    <result column="level_explain" jdbcType="VARCHAR" property="levelExplain" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, level_img, level_name, level_label, score_begin, score_end, level_explain, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_level
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_worker_epoint_level
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.aorun.epoint.model.WorkerEpointLevel">
+    insert into t_worker_epoint_level (id, level_img, level_name, 
+      level_label, score_begin, score_end, 
+      level_explain, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{levelImg,jdbcType=VARCHAR}, #{levelName,jdbcType=VARCHAR}, 
+      #{levelLabel,jdbcType=VARCHAR}, #{scoreBegin,jdbcType=INTEGER}, #{scoreEnd,jdbcType=INTEGER}, 
+      #{levelExplain,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aorun.epoint.model.WorkerEpointLevel">
+    insert into t_worker_epoint_level
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="levelImg != null">
+        level_img,
+      </if>
+      <if test="levelName != null">
+        level_name,
+      </if>
+      <if test="levelLabel != null">
+        level_label,
+      </if>
+      <if test="scoreBegin != null">
+        score_begin,
+      </if>
+      <if test="scoreEnd != null">
+        score_end,
+      </if>
+      <if test="levelExplain != null">
+        level_explain,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="levelImg != null">
+        #{levelImg,jdbcType=VARCHAR},
+      </if>
+      <if test="levelName != null">
+        #{levelName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelLabel != null">
+        #{levelLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="scoreBegin != null">
+        #{scoreBegin,jdbcType=INTEGER},
+      </if>
+      <if test="scoreEnd != null">
+        #{scoreEnd,jdbcType=INTEGER},
+      </if>
+      <if test="levelExplain != null">
+        #{levelExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aorun.epoint.model.WorkerEpointLevel">
+    update t_worker_epoint_level
+    <set>
+      <if test="levelImg != null">
+        level_img = #{levelImg,jdbcType=VARCHAR},
+      </if>
+      <if test="levelName != null">
+        level_name = #{levelName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelLabel != null">
+        level_label = #{levelLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="scoreBegin != null">
+        score_begin = #{scoreBegin,jdbcType=INTEGER},
+      </if>
+      <if test="scoreEnd != null">
+        score_end = #{scoreEnd,jdbcType=INTEGER},
+      </if>
+      <if test="levelExplain != null">
+        level_explain = #{levelExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aorun.epoint.model.WorkerEpointLevel">
+    update t_worker_epoint_level
+    set level_img = #{levelImg,jdbcType=VARCHAR},
+      level_name = #{levelName,jdbcType=VARCHAR},
+      level_label = #{levelLabel,jdbcType=VARCHAR},
+      score_begin = #{scoreBegin,jdbcType=INTEGER},
+      score_end = #{scoreEnd,jdbcType=INTEGER},
+      level_explain = #{levelExplain,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getRangeEpointLevel" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_level
+    where   <![CDATA[     score_begin   <   #{totalScore}  and      score_end>= #{totalScore}  ]]>
+  </select>
+
+
+</mapper>

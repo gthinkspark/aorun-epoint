@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aorun.epoint.dao.WorkerEpointRecordMapper">
+  <resultMap id="BaseResultMap" type="com.aorun.epoint.model.WorkerEpointRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="worker_id" jdbcType="BIGINT" property="workerId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="statistics_type" jdbcType="INTEGER" property="statisticsType" />
+    <result column="obtain_time" jdbcType="TIMESTAMP" property="obtainTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="epoint_config_code" jdbcType="VARCHAR" property="epointConfigCode" />
+    <result column="biz_unique_sign_code" jdbcType="VARCHAR" property="bizUniqueSignCode" />
+    <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, worker_id, title, score, statistics_type, obtain_time, create_time, epoint_config_code, 
+    biz_unique_sign_code,msg_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_worker_epoint_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.aorun.epoint.model.WorkerEpointRecord">
+    insert into t_worker_epoint_record (id, worker_id, title, 
+      score, statistics_type, obtain_time, 
+      create_time, epoint_config_code, biz_unique_sign_code,msg_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{workerId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+      #{score,jdbcType=INTEGER}, #{statisticsType,jdbcType=INTEGER}, now(),
+      now(), #{epointConfigCode,jdbcType=VARCHAR}, #{bizUniqueSignCode,jdbcType=VARCHAR}, #{msgId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aorun.epoint.model.WorkerEpointRecord">
+    insert into t_worker_epoint_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="workerId != null">
+        worker_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="statisticsType != null">
+        statistics_type,
+      </if>
+      <if test="obtainTime != null">
+        obtain_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="epointConfigCode != null">
+        epoint_config_code,
+      </if>
+      <if test="bizUniqueSignCode != null">
+        biz_unique_sign_code,
+      </if>
+      <if test="msgId != null">
+        msg_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="workerId != null">
+        #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="statisticsType != null">
+        #{statisticsType,jdbcType=INTEGER},
+      </if>
+      <if test="obtainTime != null">
+        #{obtainTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="epointConfigCode != null">
+        #{epointConfigCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bizUniqueSignCode != null">
+        #{bizUniqueSignCode,jdbcType=VARCHAR},
+      </if>
+      <if test="msgId != null">
+        #{msgId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aorun.epoint.model.WorkerEpointRecord">
+    update t_worker_epoint_record
+    <set>
+      <if test="workerId != null">
+        worker_id = #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="statisticsType != null">
+        statistics_type = #{statisticsType,jdbcType=INTEGER},
+      </if>
+      <if test="obtainTime != null">
+        obtain_time = #{obtainTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="epointConfigCode != null">
+        epoint_config_code = #{epointConfigCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bizUniqueSignCode != null">
+        biz_unique_sign_code = #{bizUniqueSignCode,jdbcType=VARCHAR},
+      </if>
+      <if test="msgId != null">
+        msg_id = #{msgId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aorun.epoint.model.WorkerEpointRecord">
+    update t_worker_epoint_record
+    set worker_id = #{workerId,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      statistics_type = #{statisticsType,jdbcType=INTEGER},
+      obtain_time = #{obtainTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      epoint_config_code = #{epointConfigCode,jdbcType=VARCHAR},
+      msg_id = #{msgId,jdbcType=VARCHAR},
+      biz_unique_sign_code = #{bizUniqueSignCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findUniqueRecord"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_record
+    where worker_id = #{workerId,jdbcType=BIGINT} and epoint_config_code = #{epointConfigCode,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <select id="findUniqueRecordByBizUniqueSignCode"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_record
+    where worker_id = #{workerId,jdbcType=BIGINT} and epoint_config_code = #{epointConfigCode,jdbcType=VARCHAR}
+    and  biz_unique_sign_code = #{bizUniqueSignCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findTodayUniqueRecord"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_record
+    where worker_id = #{workerId,jdbcType=BIGINT} and epoint_config_code = #{epointConfigCode,jdbcType=VARCHAR}
+    <![CDATA[   and DATE_FORMAT(obtain_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')  ]]>
+
+  </select>
+
+  <select id="findworkerEpointRecordByPage"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_record
+    where worker_id = #{workerId,jdbcType=BIGINT}
+    order by obtain_time desc
+    <if test="start!=null and limit!=null ">
+      limit #{start},#{limit}
+    </if>
+  </select>
+
+
+</mapper>

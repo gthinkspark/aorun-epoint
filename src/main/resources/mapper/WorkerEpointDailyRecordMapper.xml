@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aorun.epoint.dao.WorkerEpointDailyRecordMapper">
+  <resultMap id="BaseResultMap" type="com.aorun.epoint.model.WorkerEpointDailyRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="worker_id" jdbcType="BIGINT" property="workerId" />
+    <result column="statistics_type" jdbcType="INTEGER" property="statisticsType" />
+    <result column="total_score" jdbcType="INTEGER" property="totalScore" />
+    <result column="score_date" jdbcType="DATE" property="scoreDate" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <resultMap id="EpointRankBaseResultMap" type="com.aorun.epoint.dto.EpointRankDto">
+    <result column="worker_id" jdbcType="BIGINT" property="workerId" />
+    <result column="total_score" jdbcType="INTEGER" property="totalScore" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    id, worker_id, statistics_type, total_score, score_date, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_daily_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_worker_epoint_daily_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.aorun.epoint.model.WorkerEpointDailyRecord">
+    insert into t_worker_epoint_daily_record (id, worker_id, statistics_type, 
+      total_score, score_date, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{workerId,jdbcType=BIGINT}, #{statisticsType,jdbcType=INTEGER}, 
+      #{totalScore,jdbcType=INTEGER}, #{scoreDate,jdbcType=DATE}, now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aorun.epoint.model.WorkerEpointDailyRecord">
+    insert into t_worker_epoint_daily_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="workerId != null">
+        worker_id,
+      </if>
+      <if test="statisticsType != null">
+        statistics_type,
+      </if>
+      <if test="totalScore != null">
+        total_score,
+      </if>
+      <if test="scoreDate != null">
+        score_date,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="workerId != null">
+        #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="statisticsType != null">
+        #{statisticsType,jdbcType=INTEGER},
+      </if>
+      <if test="totalScore != null">
+        #{totalScore,jdbcType=INTEGER},
+      </if>
+      <if test="scoreDate != null">
+        #{scoreDate,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aorun.epoint.model.WorkerEpointDailyRecord">
+    update t_worker_epoint_daily_record
+    <set>
+      <if test="workerId != null">
+        worker_id = #{workerId,jdbcType=BIGINT},
+      </if>
+      <if test="statisticsType != null">
+        statistics_type = #{statisticsType,jdbcType=INTEGER},
+      </if>
+      <if test="totalScore != null">
+        total_score = #{totalScore,jdbcType=INTEGER},
+      </if>
+      <if test="scoreDate != null">
+        score_date = #{scoreDate,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aorun.epoint.model.WorkerEpointDailyRecord">
+    update t_worker_epoint_daily_record
+    set worker_id = #{workerId,jdbcType=BIGINT},
+      statistics_type = #{statisticsType,jdbcType=INTEGER},
+      total_score = #{totalScore,jdbcType=INTEGER},
+      score_date = #{scoreDate,jdbcType=DATE},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findTodayRecordByWorkerIdAndStatisticsType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_daily_record
+    where  worker_id = #{workerId,jdbcType=BIGINT} and statistics_type = #{statisticsType,jdbcType=INTEGER}
+    <![CDATA[  and  DATE_FORMAT(score_date, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') ]]>
+  </select>
+
+
+
+  <select id="senvenDayTotalEpointRange" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_daily_record  where
+    worker_id = #{workerId,jdbcType=BIGINT}  and  statistics_type = 5 and
+    <![CDATA[
+    DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= date(score_date)   ]]>
+    order by score_date desc
+  </select>
+
+
+
+  <select id="senvenDayTotalEpointByStatisticsType"  resultType="java.lang.Long">
+    select
+   sum(total_score)
+    from t_worker_epoint_daily_record  where
+    worker_id = #{workerId,jdbcType=BIGINT}  and   statistics_type = #{statisticsType,jdbcType=INTEGER} and
+    <![CDATA[
+    DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= date(score_date)   ]]>
+  </select>
+
+
+  <select id="allTotalEpointByStatisticsType" resultType="java.lang.Long">
+    select
+    sum(total_score)
+    from t_worker_epoint_daily_record  where
+    worker_id = #{workerId,jdbcType=BIGINT}  and   statistics_type = #{statisticsType,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="weekRank" resultMap="EpointRankBaseResultMap">
+    SELECT worker_id ,sum(total_score) as total_score FROM t_worker_epoint_daily_record where
+    statistics_type = 5 and
+     <![CDATA[  DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= date(score_date)   ]]>
+    GROUP BY worker_id  order by total_score desc
+  </select>
+
+
+  <select id="totalRank" resultMap="EpointRankBaseResultMap">
+    SELECT worker_id ,sum(total_score) as total_score FROM t_worker_epoint_daily_record where
+    statistics_type = 5
+    GROUP BY worker_id  order by total_score desc
+  </select>
+
+  <select id="weekRankByPage" resultMap="EpointRankBaseResultMap">
+    SELECT worker_id ,sum(total_score) as total_score FROM t_worker_epoint_daily_record where
+    statistics_type = 5 and
+     <![CDATA[  DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= date(score_date)   ]]>
+    GROUP BY worker_id  order by total_score desc
+    <if test="start!=null and limit!=null ">
+      limit #{start},#{limit}
+    </if>
+  </select>
+
+
+  <select id="totalRankByPage" resultMap="EpointRankBaseResultMap">
+    SELECT worker_id ,sum(total_score) as total_score FROM t_worker_epoint_daily_record where
+    statistics_type = 5
+    GROUP BY worker_id  order by total_score desc
+
+    <if test="start!=null and limit!=null ">
+      limit #{start},#{limit}
+    </if>
+  </select>
+
+
+
+</mapper>
