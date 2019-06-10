@@ -13,6 +13,8 @@ public class UserDto implements Serializable {
 //		this.errorMsg = errorMsg;
 //	}
 
+
+
     /**
      * 用户唯一ID
      */

@@ -66,31 +66,31 @@ public class WorkerEpointDailyRecordServiceImpl implements WorkerEpointDailyReco
     }
 
     @Override
-    public List<EpointRankDto> weekRank() {
-        return workerEpointDailyRecordMapper.weekRank();
+    public List<EpointRankDto> weekRank(String[] idList) {
+        return workerEpointDailyRecordMapper.weekRank(idList);
     }
 
     @Override
-    public List<EpointRankDto> totalRank() {
-        return workerEpointDailyRecordMapper.totalRank();
+    public List<EpointRankDto> totalRank(String[] idList) {
+        return workerEpointDailyRecordMapper.totalRank(idList);
     }
 
     @Override
-    public List<EpointRankDto> weekRankByPage(Integer pageIndex, Integer pageSize) {
+    public List<EpointRankDto> weekRankByPage(Integer pageIndex, Integer pageSize,String[] idList) {
         ///** 启始页-位置 */
         Integer start = (pageIndex - 1) * pageSize;
         /** 每页大小  */
         Integer limit = pageSize;
-        return workerEpointDailyRecordMapper.weekRankByPage(start,limit);
+        return workerEpointDailyRecordMapper.weekRankByPage(start,limit,idList);
     }
 
     @Override
-    public List<EpointRankDto> totalRankByPage(Integer pageIndex, Integer pageSize) {
+    public List<EpointRankDto> totalRankByPage(Integer pageIndex, Integer pageSize,String[] idList) {
         ///** 启始页-位置 */
         Integer start = (pageIndex - 1) * pageSize;
         /** 每页大小  */
         Integer limit = pageSize;
-        return workerEpointDailyRecordMapper.totalRankByPage(start,limit);
+        return workerEpointDailyRecordMapper.totalRankByPage(start,limit,idList);
     }
 
 

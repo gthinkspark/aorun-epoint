@@ -4,6 +4,8 @@ import com.aorun.EpointMsgDataStructure;
 import com.aorun.epoint.model.*;
 import com.aorun.epoint.rabbitmq_direct.RabbitConfig;
 import com.aorun.epoint.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import java.util.List;
 @Component
 @RabbitListener(queues = RabbitConfig.epointMsgDataStructureQueue)
 public class ReceiverEpointMsgDataStructure {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private WorkerEpointConfigService workerEpointConfigService;
@@ -34,7 +38,7 @@ public class ReceiverEpointMsgDataStructure {
     @RabbitHandler
     public void process(EpointMsgDataStructure epointMsgDataStructure) throws Exception{
         try{
-        System.out.println("ReceiverObject111  : " + epointMsgDataStructure.toString());
+            LOGGER.info("ReceiverObject111  : " + epointMsgDataStructure.toString());
         String bizUniqueSignCode = epointMsgDataStructure.getBizUniqueSignCode();//业务唯一标识码
         Integer epoint = epointMsgDataStructure.getEpoint();//选填(默认为0)
         String epointConfigCode = epointMsgDataStructure.getEpointConfigCode();//积分配置编码
@@ -55,13 +59,13 @@ public class ReceiverEpointMsgDataStructure {
         if(obtainScoreRate==1){//1-只能添加有一次
             //判断是否添加过
             List<WorkerEpointRecord> workerEpointRecordList =  workerEpointRecordService.findUniqueRecord(workerId,epointConfigCode);//查找工会会员ID某个epointConfigCode是否添加过
-            if(workerEpointRecordList==null){//可以添加
+            if(workerEpointRecordList!=null &&workerEpointRecordList.size()==0){//可以添加
                 this.saveEpointInfo(title,workerId,epointConfigCode,score,bizUniqueSignCode,msgId,statisticsType);
             }
         }else if(obtainScoreRate==2){//2-每日添加一次
             //判断是否添加过
             List<WorkerEpointRecord> workerEpointRecordList = workerEpointRecordService.findTodayUniqueRecord(workerId,epointConfigCode);//查找工会会员ID某个epointConfigCode当天是否添加过
-            if(workerEpointRecordList==null){//可以添加
+            if(workerEpointRecordList!=null &&workerEpointRecordList.size()==0){//可以添加
                 this.saveEpointInfo(title,workerId,epointConfigCode,score,bizUniqueSignCode,msgId,statisticsType);
             }
         }else if(obtainScoreRate==3){//每日不限次数添加一次
@@ -69,7 +73,9 @@ public class ReceiverEpointMsgDataStructure {
             this.saveEpointInfo(title,workerId,epointConfigCode,score,bizUniqueSignCode,msgId,statisticsType);
         }
         }catch(Exception ex){
-            ex.toString();
+            ex.printStackTrace();
+            LOGGER.error("==========================================");
+            LOGGER.error(ex.toString());
         }
     }
 
@@ -78,7 +84,7 @@ public class ReceiverEpointMsgDataStructure {
         //判断  workerId,epointConfigCode,bizUniqueSignCode
         if (bizUniqueSignCode != null && !bizUniqueSignCode.equals("")) {
             List<WorkerEpointRecord> workerEpointRecordList = workerEpointRecordService.findUniqueRecordByBizUniqueSignCode(workerId, epointConfigCode, bizUniqueSignCode);
-            if (workerEpointRecordList == null) {
+            if (workerEpointRecordList != null &&workerEpointRecordList.size()==0) {
                 this.save(title,workerId,epointConfigCode,score,bizUniqueSignCode,msgId,statisticsType);
             }
         }else{

@@ -2,6 +2,7 @@ package com.aorun.epoint.controller;
 
 
 import com.aorun.EpointMsgDataStructure;
+import com.aorun.epoint.config.ThirdSysProperty;
 import com.aorun.epoint.controller.login.WorkerUnionInfoDto;
 import com.aorun.epoint.dto.EpointRankDto;
 import com.aorun.epoint.model.WorkerEpointDailyRecord;
@@ -16,6 +17,9 @@ import com.aorun.epoint.util.DateFriendlyShow;
 import com.aorun.epoint.util.PageConstant;
 import com.aorun.epoint.util.biz.ImagePropertiesConfig;
 import com.aorun.epoint.util.biz.WorkerMemberUtil;
+import com.aorun.epoint.util.biz.unioninfo.TESTOKHttp;
+import com.aorun.epoint.util.biz.unioninfo.UnionInfo;
+import com.aorun.epoint.util.biz.unioninfo.WorkerId;
 import com.aorun.epoint.util.jsonp.Jsonp;
 import com.aorun.epoint.util.jsonp.Jsonp_data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -47,19 +52,24 @@ public class WorkerGradeReportRestController {
     @Autowired
     private SenderEpointMsgDataStructure senderEpointMsgDataStructure;
 
+    @Resource
+    private ThirdSysProperty thirdSysProperty;
+
 
 
     //客户端上传任务积分
     @RequestMapping(value = "/uploadTaskEpoint", method = RequestMethod.GET)
     public Object uploadTaskEpoint(@RequestParam(name = "sid", required = true, defaultValue = "") String sid,
-                                  @RequestParam(name = "taskCode", required = true, defaultValue = "") String taskCode
+                                  @RequestParam(name = "taskCode", required = true, defaultValue = "") String taskCode,
+                                   @RequestParam(name = "epoint", required = false, defaultValue = "0") Integer epoint,
+                                   @RequestParam(name = "bizUniqueSignCode", required = false, defaultValue = "") String bizUniqueSignCode
     ) {
 
         Long workerId = WorkerMemberUtil.getWorkerId(sid);
         EpointMsgDataStructure epointMsgDataStructure = new EpointMsgDataStructure();
 
-        epointMsgDataStructure.setBizUniqueSignCode("");
-        epointMsgDataStructure.setEpoint(0);
+        epointMsgDataStructure.setBizUniqueSignCode(bizUniqueSignCode);
+        epointMsgDataStructure.setEpoint(epoint);
         epointMsgDataStructure.setEpointConfigCode(taskCode);
         epointMsgDataStructure.setMsgId(UUID.randomUUID().toString());
         epointMsgDataStructure.setWorkerId(workerId);
@@ -137,46 +147,80 @@ public class WorkerGradeReportRestController {
     public Object rankingTotalCollect(@RequestParam(name = "sid", required = true, defaultValue = "") String sid) {
 
 
-        Long workerId = WorkerMemberUtil.getWorkerId(sid);
+        Long myworkerId = WorkerMemberUtil.getWorkerId(sid);
+        System.out.println("workerId---->"+myworkerId);
         WorkerMember myWorkerMember = WorkerMemberUtil.getWorkerMember(sid);
 
-        WorkerUnionInfoDto workerUnionInfoDto = WorkerMemberUtil.getWorkerMember(workerId);
+       // WorkerUnionInfoDto workerUnionInfoDto = WorkerMemberUtil.getWorkerMember(workerId);
 
         //汇总接口
         Map<String, Object> datamap = new HashMap<>();
         datamap.put("imgPath", myWorkerMember.getImgPath());
 
-        if(workerUnionInfoDto!=null){
-            datamap.put("workerMemberName", workerUnionInfoDto.getName());
-            datamap.put("workerName", workerUnionInfoDto.getUnionName());
-            datamap.put("comeInWorkertime",DateFormat.dateTimeToDateString2(workerUnionInfoDto.getCheckTime()));
-        }else{
-            datamap.put("workerMemberName","");
-            datamap.put("workerName", "");
-            datamap.put("comeInWorkertime","");
+
+        //TODO:获取个人工会信息&个人入会会员列表
+        StringBuffer ids = new StringBuffer("");
+        try{
+            String unionbaseurl = thirdSysProperty.getUnionbaseurl();
+            //sid = "ZxB2vz4vB87SN2NT69259365wY7iumD5";
+            System.out.println("unionbaseurl+sid===="+unionbaseurl+sid);
+            UnionInfo unionInfo = TESTOKHttp.interfaceUtil(unionbaseurl+sid,"");
+            if(unionInfo!=null){
+                String workerMemberName = unionInfo.getWorkerName();
+                String workerName = unionInfo.getUnionName();
+
+                long lt = new Long(unionInfo.getCheckTime());
+                Date date = new Date(lt);
+                String comeInWorkertime = DateFormat.dateTimeToDateString2(date);
+                datamap.put("workerMemberName", workerMemberName);//个人名字
+                datamap.put("workerName", workerName);//工会名字
+                datamap.put("comeInWorkertime",comeInWorkertime);//入会时间
+
+                List<WorkerId> workerIds = unionInfo.getWorkerUnionList();
+                for(int i=0;i<workerIds.size();i++){
+                    WorkerId workerId = workerIds.get(i);
+                    ids.append(workerId.getWorkerId());
+                    if(i!=workerIds.size()-1){
+                        ids.append(",");
+                    }
+                }
+                System.out.println(ids.toString());
+
+            }else{
+                datamap.put("workerMemberName","");
+                datamap.put("workerName", "");
+                datamap.put("comeInWorkertime","");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("unionInfo ----error"+e.getMessage());
         }
 
+
+        String[] idList = new String[]{ids.toString()};
         //周排名
-        List<EpointRankDto> epointWeekRankDtoList = workerEpointDailyRecordService.weekRank();
+        List<EpointRankDto> epointWeekRankDtoList = workerEpointDailyRecordService.weekRank(idList);
+        System.out.println("epointWeekRankDtoList.size()-----"+epointWeekRankDtoList.size());
         int weeknum =1;
         for(EpointRankDto epointRankDto:epointWeekRankDtoList){
-            if(workerId==epointRankDto.getWorkerId()){
+            if(myworkerId==epointRankDto.getWorkerId()){
                 break;
             }
             weeknum++;
         }
         datamap.put("weekRank", weeknum);//周排名
         //总排名
-        List<EpointRankDto> epointTotalRankDtoList = workerEpointDailyRecordService.totalRank();
+        List<EpointRankDto> epointTotalRankDtoList = workerEpointDailyRecordService.totalRank(idList);
+        System.out.println("epointWeekRankDtoList.size()-----"+epointWeekRankDtoList.size());
         int totalnum =1;
         for(EpointRankDto epointRankDto:epointTotalRankDtoList){
-            if(workerId==epointRankDto.getWorkerId()){
+            if(myworkerId==epointRankDto.getWorkerId()){
                 break;
             }
             totalnum++;
         }
         datamap.put("totalRank", totalnum);//总排名
-        WorkerMember workerMember = workerMemberService.findByWorkerId(workerId);
+        WorkerMember workerMember = workerMemberService.findByWorkerId(myworkerId);
         datamap.put("epoint", workerMember.getEpoints());//我的积分
 
         datamap.put("epointLevel",workerMember.getEpointLevel());//积分等级
@@ -190,10 +234,39 @@ public class WorkerGradeReportRestController {
                                   @RequestParam(name = "pageIndex", required = true, defaultValue = "1") Integer pageIndex,
                                   @RequestParam(name = "pageSize", required = false, defaultValue = PageConstant.APP_PAGE_SIZE + "") Integer pageSize
     ) {
+        Long myworkerId = WorkerMemberUtil.getWorkerId(sid);
+        System.out.println("workerId---->"+myworkerId);
 
+        //TODO:获取个人工会信息&个人入会会员列表
+        StringBuffer ids = new StringBuffer("");
+        try{
+            String unionbaseurl = thirdSysProperty.getUnionbaseurl();
+            //sid = "ZxB2vz4vB87SN2NT69259365wY7iumD5";
+            System.out.println("unionbaseurl+sid===="+unionbaseurl+sid);
+            UnionInfo unionInfo = TESTOKHttp.interfaceUtil(unionbaseurl+sid,"");
+
+            if(unionInfo!=null){
+                List<WorkerId> workerIds = unionInfo.getWorkerUnionList();
+                for(int i=0;i<workerIds.size();i++){
+                    WorkerId workerId = workerIds.get(i);
+                    ids.append(workerId.getWorkerId());
+                    if(i!=workerIds.size()-1){
+                        ids.append(",");
+                    }
+                }
+                System.out.println(ids.toString());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("workerIds  exception"+e.getMessage());
+        }
+
+        String[] idList = new String[]{ids.toString()};
+        System.out.println("ids."+ids.toString());
         //WorkerMember workerMember = WorkerMemberUtil.getWorkerMember(sid);
         List<Map<String, Object>> datamapList = new ArrayList<>();
-        List<EpointRankDto> epointWeekRankDtoList = workerEpointDailyRecordService.weekRankByPage(pageIndex,pageSize);
+        List<EpointRankDto> epointWeekRankDtoList = workerEpointDailyRecordService.weekRankByPage(pageIndex,pageSize,idList);
+        System.out.println("epointWeekRankDtoList.size---"+epointWeekRankDtoList.size());
         for(EpointRankDto epointRankDto:epointWeekRankDtoList){
             Map<String, Object> datamap = new HashMap<>();
             WorkerMember workerMember = workerMemberService.findByWorkerId(epointRankDto.getWorkerId());
@@ -226,9 +299,39 @@ public class WorkerGradeReportRestController {
                                     @RequestParam(name = "pageSize", required = false, defaultValue = PageConstant.APP_PAGE_SIZE + "") Integer pageSize
     ) {
 
+        Long myworkerId = WorkerMemberUtil.getWorkerId(sid);
+        System.out.println("workerId---->"+myworkerId);
+
+        //TODO:获取个人工会信息&个人入会会员列表
+        StringBuffer ids = new StringBuffer("");
+        try{
+            String unionbaseurl = thirdSysProperty.getUnionbaseurl();
+            //sid = "ZxB2vz4vB87SN2NT69259365wY7iumD5";
+            System.out.println("unionbaseurl+sid===="+unionbaseurl+sid);
+            UnionInfo unionInfo = TESTOKHttp.interfaceUtil(unionbaseurl+sid,"");
+
+            if(unionInfo!=null){
+                List<WorkerId> workerIds = unionInfo.getWorkerUnionList();
+                for(int i=0;i<workerIds.size();i++){
+                    WorkerId workerId = workerIds.get(i);
+                    ids.append(workerId.getWorkerId());
+                    if(i!=workerIds.size()-1){
+                        ids.append(",");
+                    }
+                }
+                System.out.println(ids.toString());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("workerIds  exception"+e.getMessage());
+        }
+        String[] idList = new String[]{ids.toString()};
+        System.out.println("ids."+ids.toString());
+
 
         List<Map<String, Object>> datamapList = new ArrayList<>();
-        List<EpointRankDto> epointTotalRankDtoList = workerEpointDailyRecordService.totalRankByPage(pageIndex,pageSize);
+        List<EpointRankDto> epointTotalRankDtoList = workerEpointDailyRecordService.totalRankByPage(pageIndex,pageSize,idList);
+        System.out.println("epointTotalRankDtoList.size---"+epointTotalRankDtoList.size());
         for(EpointRankDto epointRankDto:epointTotalRankDtoList){
             Map<String, Object> datamap = new HashMap<>();
             WorkerMember workerMember = workerMemberService.findByWorkerId(epointRankDto.getWorkerId());

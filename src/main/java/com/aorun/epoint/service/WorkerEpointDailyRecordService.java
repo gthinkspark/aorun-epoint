@@ -66,15 +66,15 @@ public interface WorkerEpointDailyRecordService {
     Long allTotalEpointByStatisticsType(Long workerId,Integer statisticsType);
 
     //周排名-所有数据
-    List<EpointRankDto> weekRank();
+    List<EpointRankDto> weekRank(String[] idList);
 
     //总排名-所有数据
-    List<EpointRankDto>  totalRank();
+    List<EpointRankDto>  totalRank(String[] idList);
 
 
     //周排名--分页查询
-    List<EpointRankDto> weekRankByPage(Integer pageIndex, Integer pageSize);
+    List<EpointRankDto> weekRankByPage(Integer pageIndex, Integer pageSize,String[] idList);
 
     //总排名-分页查询
-    List<EpointRankDto>  totalRankByPage(Integer pageIndex, Integer pageSize);
+    List<EpointRankDto>  totalRankByPage(Integer pageIndex, Integer pageSize,String[] idList);
 }

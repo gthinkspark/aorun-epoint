@@ -65,13 +65,11 @@ public class RedisCache {
             }
             Gson gson = new Gson();
             rt = gson.fromJson(string, clacc);
-//	        rt = gson.fromJson(string, new TypeToken<T>(){}.getType());
 
         } else {
             // 解析data
             Gson gson = new Gson();
             rt = gson.fromJson(string, clacc);
-//			 rt = gson.fromJson(string, new TypeToken<T>(){}.getType());
         }
         return rt;
     }

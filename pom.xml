@@ -6,8 +6,9 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.3.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
+    <!-- lookup parent from repository -->
     <groupId>com.aorun.epoint</groupId>
     <artifactId>aorun-epoint</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -18,15 +19,16 @@
         <java.version>1.8</java.version>
         <!-- gson -->
         <gson.version>2.8.2</gson.version>
-        <!-- redis -->
+        <!-- redis
         <spring-boot-starter-redis-version>1.3.2.RELEASE</spring-boot-starter-redis-version>
+        -->
         <!-- memcached -->
         <memcached.version>3.0.0</memcached.version>
-
         <mysql-connector>5.1.39</mysql-connector>
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -36,12 +38,43 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <!--
-            <version>2.0.1</version>
-            -->
+            //TODO:为什么version不能去掉
+            <version>2.0.1</version>-->
             <version>1.2.0</version>
+
+        </dependency>
+        <!-- Spring Boot Redis 依赖
+        1、引入 spring-boot-starter-redis(1.4版本前)，spring-boot-starter-data-redis（1.4版本后）
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        -->
+        <!-- lettuce pool 缓存连接池
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.5.0</version>
         </dependency>
 
-        <dependency>
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>2.9.5</version>
+    </dependency>
+    -->
+
+        <!--也可以用fastjson
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.9.5</version>
+    </dependency>
+    -->
+
+
+
+    <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector}</version>
@@ -60,13 +93,15 @@
             <version>${gson.version}</version>
         </dependency>
 
-        <!-- Spring Boot Redis 依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-redis</artifactId>
-            <version>${spring-boot-starter-redis-version}</version>
-        </dependency>
 
+
+
+        <!-- java readis客户端 -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.0.0</version>
+        </dependency>
 
         <!-- 调试热部署的支持 -->
         <dependency>

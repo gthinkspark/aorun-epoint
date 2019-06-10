@@ -153,8 +153,12 @@
 
   <select id="weekRank" resultMap="EpointRankBaseResultMap">
     SELECT worker_id ,sum(total_score) as total_score FROM t_worker_epoint_daily_record where
-    statistics_type = 5 and
-     <![CDATA[  DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= date(score_date)   ]]>
+    statistics_type = 5
+    and  worker_id in
+    <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+      ${id}
+    </foreach>
+    and  <![CDATA[  DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= date(score_date)   ]]>
     GROUP BY worker_id  order by total_score desc
   </select>
 
@@ -162,13 +166,21 @@
   <select id="totalRank" resultMap="EpointRankBaseResultMap">
     SELECT worker_id ,sum(total_score) as total_score FROM t_worker_epoint_daily_record where
     statistics_type = 5
+    and  worker_id in
+    <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+      ${id}
+    </foreach>
     GROUP BY worker_id  order by total_score desc
   </select>
 
   <select id="weekRankByPage" resultMap="EpointRankBaseResultMap">
     SELECT worker_id ,sum(total_score) as total_score FROM t_worker_epoint_daily_record where
-    statistics_type = 5 and
-     <![CDATA[  DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= date(score_date)   ]]>
+    statistics_type = 5
+    and  worker_id in
+    <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+      ${id}
+    </foreach>
+    and   <![CDATA[  DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= date(score_date)   ]]>
     GROUP BY worker_id  order by total_score desc
     <if test="start!=null and limit!=null ">
       limit #{start},#{limit}
@@ -179,8 +191,13 @@
   <select id="totalRankByPage" resultMap="EpointRankBaseResultMap">
     SELECT worker_id ,sum(total_score) as total_score FROM t_worker_epoint_daily_record where
     statistics_type = 5
-    GROUP BY worker_id  order by total_score desc
+    and  worker_id in
+    <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+      ${id}
+    </foreach>
 
+
+    GROUP BY worker_id  order by total_score desc
     <if test="start!=null and limit!=null ">
       limit #{start},#{limit}
     </if>

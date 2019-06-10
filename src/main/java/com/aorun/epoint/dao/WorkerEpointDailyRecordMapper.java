@@ -32,13 +32,13 @@ public interface WorkerEpointDailyRecordMapper {
     Long allTotalEpointByStatisticsType(@Param("workerId") Long workerId,@Param("statisticsType") Integer statisticsType);
 
     //周排名
-    List<EpointRankDto> weekRank();
+    List<EpointRankDto> weekRank(@Param("idList") String[] idList);
 
     //总排名
-    List<EpointRankDto>  totalRank();
+    List<EpointRankDto>  totalRank(@Param("idList") String[] idList);
 
-    List<EpointRankDto> weekRankByPage(@Param("start") Integer start, @Param("limit") Integer limit);
+    List<EpointRankDto> weekRankByPage(@Param("start") Integer start, @Param("limit") Integer limit,@Param("idList") String[] idList);
 
-    List<EpointRankDto> totalRankByPage(@Param("start") Integer start, @Param("limit") Integer limit);
+    List<EpointRankDto> totalRankByPage(@Param("start") Integer start, @Param("limit") Integer limit,@Param("idList") String[] idList);
 
 }

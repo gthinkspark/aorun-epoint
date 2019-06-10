@@ -14,7 +14,13 @@ public class WorkerMemberUtil {
 
     public static Long getWorkerId(
             String sid) {
+        System.out.println("sid------>"+sid);
         UserDto user = (UserDto) RedisCache.get(sid);
+        if(user==null){
+            System.out.println("从缓存中拿sid出错"+sid);
+        }else {
+            System.out.println("从缓存中拿sid---正确"+sid);
+        }
         WorkerMember workerMember = RedisCache.getObj(UnionUtil.generateUnionSid(user), WorkerMember.class);
         return workerMember.getId();
     }

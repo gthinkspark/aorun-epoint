@@ -238,14 +238,14 @@
     select
     <include refid="Base_Column_List" />
     from t_worker_epoint_config
-    where biz_type = #{bizType,jdbcType=INTEGER} and is_show='y'
+    where biz_type = #{bizType,jdbcType=INTEGER} and is_show='y' and is_deleted = 'n'
   </select>
 
   <select id="findEpointConfigListByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_worker_epoint_config
-    where parent_id = #{parentId,jdbcType=INTEGER} and is_show='n'
+    where parent_id = #{parentId,jdbcType=INTEGER} and is_show='n' and is_deleted = 'n'
   </select>
 
   <select id="findEpointConfigByCode" parameterType="java.lang.String" resultMap="BaseResultMap">

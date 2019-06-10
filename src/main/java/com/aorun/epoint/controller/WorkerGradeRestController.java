@@ -128,12 +128,13 @@ public class WorkerGradeRestController {
         datamap.put("id", workerGrade.getId());// ID
         datamap.put("materialsUrls", workerGrade.getMaterialsUrls());// 图片
         datamap.put("epoint", workerGrade.getObtainScore());// 获得积分
-        datamap.put("certificateName", workerGrade.getIdCard());//证书级别名称
+        datamap.put("certificateCode", workerGrade.getCertificateCode());//证书级别Code
+        datamap.put("certificateName", workerGrade.getCertificateName());//证书级别名称
         datamap.put("obtainScore", workerGrade.getObtainScore());//获得积分
 
         datamap.put("companyName", workerGrade.getCompanyName());// 单位名称
         datamap.put("name", workerGrade.getName());// 姓名
-        datamap.put("telephone", workerGrade.getObtainScore());// 手机号
+        datamap.put("telephone", workerGrade.getTelephone());// 手机号
         datamap.put("idCard", workerGrade.getIdCard());//身份证号
         datamap.put("bankCard", workerGrade.getBankCard());//银行卡号
 

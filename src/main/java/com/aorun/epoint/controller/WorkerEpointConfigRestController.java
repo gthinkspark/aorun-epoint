@@ -69,7 +69,6 @@ public class WorkerEpointConfigRestController {
             mydatamap.put("epointDescribe", workerEpointConfig.getSimpleEpointExplain());
             mydatamap.put("detailExplain",workerEpointConfig.getConfigExplain());
             //判断是否添加过
-            //TODO:判断逻辑有问题
             List<WorkerEpointRecord>  workerEpointRecordList =  workerEpointRecordService.findTodayUniqueRecord(workerId,workerEpointConfig.getCode());//查找工会会员ID某个epointConfigCode是否添加过
             if(workerEpointRecordList!=null&&workerEpointRecordList.size()>0){//可以添加
                 mydatamap.put("isComplete","1");//是否完成任务  1 完成，2未完成 3不处理任务
@@ -111,7 +110,6 @@ public class WorkerEpointConfigRestController {
             mydatamap.put("detailExplain",workerEpointConfig.getConfigExplain());
 
             //判断是否添加过
-            //TODO:判断逻辑有问题
             List<WorkerEpointRecord>  workerEpointRecordList =  workerEpointRecordService.findUniqueRecord(workerId,workerEpointConfig.getCode());//查找工会会员ID某个epointConfigCode是否添加过
             if(workerEpointRecordList!=null&&workerEpointRecordList.size()>0){//可以添加
                 mydatamap.put("isComplete","1");//是否完成任务  1 完成，2未完成 3不处理任务
