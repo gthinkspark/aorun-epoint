@@ -1,6 +1,7 @@
 package com.aorun.epoint.service;
 
 
+import com.aorun.epoint.dto.EpointStatisticsDto;
 import com.aorun.epoint.model.WorkerGrade;
 
 import java.util.List;
@@ -46,5 +47,12 @@ public interface WorkerGradeService {
 
 
     List<WorkerGrade> getWorkerGradeListByWorkerId(Long workerId, Integer gradeTypeId, Integer pageIndex, Integer pageSize);
+
+
+    EpointStatisticsDto getEpointStatistics(Long gradeTypeId);
+
+    int getTotalByCertificateCode(String certificateCode);
+
+
 
 }

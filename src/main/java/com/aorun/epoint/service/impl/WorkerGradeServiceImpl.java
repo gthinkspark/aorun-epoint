@@ -1,6 +1,7 @@
 package com.aorun.epoint.service.impl;
 
 import com.aorun.epoint.dao.WorkerGradeMapper;
+import com.aorun.epoint.dto.EpointStatisticsDto;
 import com.aorun.epoint.model.WorkerGrade;
 import com.aorun.epoint.service.WorkerGradeService;
 import org.slf4j.Logger;
@@ -53,6 +54,16 @@ public class WorkerGradeServiceImpl implements WorkerGradeService {
         /** 每页大小  */
         Integer limit = pageSize;
         return workerGradeMapper.getWorkerGradeListByWorkerId(workerId,gradeTypeId, start, limit);
+    }
+
+    @Override
+    public EpointStatisticsDto getEpointStatistics(Long gradeTypeId) {
+        return workerGradeMapper.getEpointStatistics(gradeTypeId);
+    }
+
+    @Override
+    public int getTotalByCertificateCode(String certificateCode) {
+        return workerGradeMapper.getTotalByCertificateCode(certificateCode);
     }
 
 }

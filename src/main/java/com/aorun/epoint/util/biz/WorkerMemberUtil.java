@@ -5,6 +5,8 @@ import com.aorun.epoint.controller.login.UserDto;
 import com.aorun.epoint.controller.login.WorkerUnionInfoDto;
 import com.aorun.epoint.model.WorkerMember;
 import com.aorun.epoint.util.redis.RedisCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -12,14 +14,18 @@ import com.aorun.epoint.util.redis.RedisCache;
  */
 public class WorkerMemberUtil {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(WorkerMemberUtil.class);
+
     public static Long getWorkerId(
             String sid) {
-        System.out.println("sid------>"+sid);
+        LOGGER.info("sid------>{}",sid);
         UserDto user = (UserDto) RedisCache.get(sid);
-        if(user==null){
-            System.out.println("从缓存中拿sid出错"+sid);
-        }else {
-            System.out.println("从缓存中拿sid---正确"+sid);
+        if(LOGGER.isDebugEnabled()){
+            if(user==null){
+                LOGGER.debug("从缓存中拿sid出错 {}",sid);
+            }else {
+                LOGGER.debug("从缓存中拿sid---正确{}",sid);
+            }
         }
         WorkerMember workerMember = RedisCache.getObj(UnionUtil.generateUnionSid(user), WorkerMember.class);
         return workerMember.getId();

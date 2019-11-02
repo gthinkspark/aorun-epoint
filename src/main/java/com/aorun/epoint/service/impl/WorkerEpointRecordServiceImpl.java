@@ -68,5 +68,10 @@ public class WorkerEpointRecordServiceImpl implements WorkerEpointRecordService 
         return workerEpointRecordMapper.findUniqueRecordByBizUniqueSignCode(workerId,epointConfigCode,bizUniqueSignCode);
     }
 
+    @Override
+    public Integer statisticsTotalByType(Integer type, String epointConfigCode) {
+        return workerEpointRecordMapper.statisticsTotalByType(type,epointConfigCode);
+    }
+
 
 }

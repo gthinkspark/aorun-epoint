@@ -2,19 +2,21 @@ package com.aorun.epoint.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class EpointRankDto {
+public class EpointDailyStatisticsDto {
 
-    private Long workerId;
+    //日期
+    private String scoreDate;
 
     @ApiModelProperty("总分数")
     private Integer totalScore;
 
-    public Long getWorkerId() {
-        return workerId;
+
+    public String getScoreDate() {
+        return scoreDate;
     }
 
-    public void setWorkerId(Long workerId) {
-        this.workerId = workerId;
+    public void setScoreDate(String scoreDate) {
+        this.scoreDate = scoreDate;
     }
 
     public Integer getTotalScore() {

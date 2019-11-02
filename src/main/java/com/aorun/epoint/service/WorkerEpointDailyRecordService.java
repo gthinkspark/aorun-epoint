@@ -1,6 +1,7 @@
 package com.aorun.epoint.service;
 
 
+import com.aorun.epoint.dto.EpointDailyStatisticsDto;
 import com.aorun.epoint.dto.EpointRankDto;
 import com.aorun.epoint.model.WorkerEpointDailyRecord;
 
@@ -77,4 +78,10 @@ public interface WorkerEpointDailyRecordService {
 
     //总排名-分页查询
     List<EpointRankDto>  totalRankByPage(Integer pageIndex, Integer pageSize,String[] idList);
+
+    List<EpointDailyStatisticsDto>  totalEpointDailyStatistics();
+
+    Integer getTotalEpointDailyStatisticByScoreDate(String scoreDate);
+
+
 }

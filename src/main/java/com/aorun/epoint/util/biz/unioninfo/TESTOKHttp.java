@@ -1,14 +1,8 @@
 package com.aorun.epoint.util.biz.unioninfo;
 
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map;
 
 public class TESTOKHttp {
  
@@ -80,10 +74,10 @@ public class TESTOKHttp {
 //            user = gson.fromJson(str, new TypeToken<UserDto>() {
             //}
 
-            Gson gson = new Gson();
-            Map<String, Object> map =JsonToMapUtil.toMap(strBuffer.toString());
-            unionInfo  = gson.fromJson(gson.toJson(map.get("data")),UnionInfo.class);
-            System.out.println("unionInfo---->"+unionInfo);
+//            Gson gson = new Gson();
+//            Map<String, Object> map =JsonToMapUtil.toMap(strBuffer.toString());
+//            unionInfo  = gson.fromJson(gson.toJson(map.get("data")),UnionInfo.class);
+//            System.out.println("unionInfo---->"+unionInfo);
             return unionInfo;
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,13 +85,17 @@ public class TESTOKHttp {
         return unionInfo;
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
         //https://appymclient.91catv.com:8089/fushionbaby-appnewGH/wechat/findWechatAccount
         //String url = "http://60.165.161.142:8081/fushionbaby-appnewGH/union/fromWorkerToUnionWorkers?sid=45i08O936gDc32uI109Zj73IQ3WU66Mo";
-        String url = "https://appymclient.91catv.com:8089/fushionbaby-appnewGH/union/fromWorkerToUnionWorkers?sid=ZxB2vz4vB87SN2NT69259365wY7iumD5";
+        //String url = "https://appymclient.91catv.com:8089/fushionbaby-appnewGH/union/fromWorkerToUnionWorkers?sid=ZxB2vz4vB87SN2NT69259365wY7iumD5";
         //String url = "https://appymclient.91catv.com:8089/fushionbaby-appnewGH/union/fromWorkerToUnionWorkers?sid=45i08O936gDc32uI109Zj73IQ3WU66Mo";
+
+        //String url = "https://appymclient.91catv.com:8443/fushionbaby-app/sku/searchKeyword?sourceCode=1&pageIndex=1&keyword="+newsex22+"&storeCode=";
+        String url = "https://appymclient.91catv.com:8089/fushionbaby-app/msg/send.do?phone=13671539073&msg=你好12446546465&code=6";
+        //String url = "http://localhost:8082/fushionbaby-app/msg/send.do?phone=13671539073&msg=你好&code=6";
     	interfaceUtil(url, "");//get请求
        
         /*interfaceUtil("http://172.83.28.221:7001/NSRTRegistration/test/add.do",

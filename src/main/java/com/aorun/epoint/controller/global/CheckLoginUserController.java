@@ -3,6 +3,7 @@ package com.aorun.epoint.controller.global;
 
 import com.aorun.epoint.util.jsonp.Jsonp;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CheckLoginUserController {
 
-    @RequestMapping("/checkUserLogin")
+    @RequestMapping(value = "/checkUserLogin", method = RequestMethod.GET)
     public Object checkUserLogin(@RequestParam(name = "status", required = true, defaultValue = "") String status) {
 
         if (status.equals("1")) {

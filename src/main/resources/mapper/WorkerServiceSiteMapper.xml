@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aorun.epoint.dao.WorkerServiceSiteMapper">
+  <resultMap id="BaseResultMap" type="com.aorun.epoint.model.WorkerServiceSite">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="introduce" jdbcType="VARCHAR" property="introduce" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="duty_man" jdbcType="VARCHAR" property="dutyMan" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="work_time" jdbcType="VARCHAR" property="workTime" />
+    <result column="select_num" jdbcType="INTEGER" property="selectNum" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, parent_id, address, longitude, latitude, introduce, type, duty_man, telephone, 
+    work_time,select_num, status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_worker_service_site
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_worker_service_site
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.aorun.epoint.model.WorkerServiceSite">
+    insert into t_worker_service_site (id, name, parent_id, 
+      address, longitude, latitude, 
+      introduce, type, duty_man, 
+      telephone, work_time, select_num,status,
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, 
+      #{address,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, 
+      #{introduce,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{dutyMan,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{workTime,jdbcType=VARCHAR},#{selectNum,jdbcType=INTEGER}, #{status,jdbcType=TINYINT},
+      now(),now())
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.aorun.epoint.model.WorkerServiceSite">
+    update t_worker_service_site
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null">
+        introduce = #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="dutyMan != null">
+        duty_man = #{dutyMan,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="workTime != null">
+        work_time = #{workTime,jdbcType=VARCHAR},
+      </if>
+      <if test="selectNum != null">
+        select_num = #{selectNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+        update_time = now()
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+
+  <select id="getParentSiteList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_service_site
+    where parent_id = 0  and status = 1
+  </select>
+
+
+  <select id="getWorkerServiceSiteListByParentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_service_site
+    where parent_id = #{parentId,jdbcType=VARCHAR}   and status = 1
+  </select>
+
+
+
+  <select id="totalWorkerServiceSite" resultType="java.lang.Integer">
+    select count(1)
+    from t_worker_service_site
+    where status = 1
+  </select>
+
+
+
+
+</mapper>

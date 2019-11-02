@@ -16,6 +16,12 @@
   </resultMap>
 
 
+  <resultMap id="EpointDailyBaseResultMap" type="com.aorun.epoint.dto.EpointDailyStatisticsDto">
+    <result column="score_date" jdbcType="VARCHAR" property="scoreDate" />
+    <result column="total_score" jdbcType="INTEGER" property="totalScore" />
+  </resultMap>
+
+
   <sql id="Base_Column_List">
     id, worker_id, statistics_type, total_score, score_date, update_time
   </sql>
@@ -201,6 +207,23 @@
     <if test="start!=null and limit!=null ">
       limit #{start},#{limit}
     </if>
+  </select>
+
+
+
+  <select id="totalEpointDailyStatistics" resultMap="EpointDailyBaseResultMap">
+    select sum(total_score) as total_score ,DATE_FORMAT(score_date,'%m/%d') as score_date from t_worker_epoint_daily_record where statistics_type = 5
+    and
+    <![CDATA[
+     DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= date(score_date)
+    ]]>
+    group by score_date  ORDER BY score_date desc
+  </select>
+
+
+  <select id="getTotalEpointDailyStatisticByScoreDate" resultType="java.lang.Integer">
+  select sum(total_score)  from t_worker_epoint_daily_record where statistics_type = 5
+      and score_date=  #{scoreDate}
   </select>
 
 

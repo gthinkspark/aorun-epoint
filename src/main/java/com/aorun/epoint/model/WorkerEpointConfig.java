@@ -2,6 +2,7 @@ package com.aorun.epoint.model;
 
 import java.util.Date;
 
+//@Alias("workerEpointConfig")
 public class WorkerEpointConfig {
     private Long id;
 

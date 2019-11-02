@@ -27,5 +27,7 @@ public interface WorkerEpointRecordMapper {
 
     List<WorkerEpointRecord>  findUniqueRecordByBizUniqueSignCode(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode,@Param("bizUniqueSignCode") String bizUniqueSignCode);
 
+    Integer statisticsTotalByType(@Param("type")Integer type,@Param("epointConfigCode") String epointConfigCode);
+
 
 }

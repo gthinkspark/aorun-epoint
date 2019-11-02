@@ -13,6 +13,10 @@
     <result column="biz_unique_sign_code" jdbcType="VARCHAR" property="bizUniqueSignCode" />
     <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
   </resultMap>
+
+
+
+
   <sql id="Base_Column_List">
     id, worker_id, title, score, statistics_type, obtain_time, create_time, epoint_config_code, 
     biz_unique_sign_code,msg_id
@@ -187,6 +191,37 @@
       limit #{start},#{limit}
     </if>
   </select>
+
+
+  <select id="statisticsTotalByType" resultType="java.lang.Integer">
+    select count(1) from t_worker_epoint_record where epoint_config_code = #{epointConfigCode}
+      and
+
+    <if test="type != null and type == '1'.toString()">
+      <![CDATA[ to_days(obtain_time) = to_days(now()) ]]>
+    </if>
+
+    <if test="type != null and type == '2'.toString()">
+      <![CDATA[ DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(obtain_time) ]]>
+    </if>
+
+
+    <if test="type != null and type == '3'.toString()">
+      <![CDATA[ DATE_FORMAT( obtain_time, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) ]]>
+    </if>
+
+    <if test="type != null and type == '4'.toString()">
+      <![CDATA[  QUARTER(obtain_time)=QUARTER(now()) ]]>
+    </if>
+
+
+  </select>
+
+
+
+
+
+
 
 
 </mapper>

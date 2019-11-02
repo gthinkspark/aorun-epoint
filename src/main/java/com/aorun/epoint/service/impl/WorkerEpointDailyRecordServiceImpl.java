@@ -1,6 +1,7 @@
 package com.aorun.epoint.service.impl;
 
 import com.aorun.epoint.dao.WorkerEpointDailyRecordMapper;
+import com.aorun.epoint.dto.EpointDailyStatisticsDto;
 import com.aorun.epoint.dto.EpointRankDto;
 import com.aorun.epoint.model.WorkerEpointDailyRecord;
 import com.aorun.epoint.service.WorkerEpointDailyRecordService;
@@ -91,6 +92,16 @@ public class WorkerEpointDailyRecordServiceImpl implements WorkerEpointDailyReco
         /** 每页大小  */
         Integer limit = pageSize;
         return workerEpointDailyRecordMapper.totalRankByPage(start,limit,idList);
+    }
+
+    @Override
+    public List<EpointDailyStatisticsDto> totalEpointDailyStatistics() {
+        return workerEpointDailyRecordMapper.totalEpointDailyStatistics();
+    }
+
+    @Override
+    public Integer getTotalEpointDailyStatisticByScoreDate(String scoreDate) {
+        return workerEpointDailyRecordMapper.getTotalEpointDailyStatisticByScoreDate(scoreDate);
     }
 
 

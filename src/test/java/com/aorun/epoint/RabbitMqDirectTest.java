@@ -3,16 +3,10 @@ package com.aorun.epoint;
 import com.aorun.epoint.rabbitmq_direct.HelloSender1;
 import com.aorun.epoint.rabbitmq_direct.HelloSender2;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-//import com.aorun.epoint.rabbitmq_direct.SenderObject;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class RabbitMqDirectTest {
+public class RabbitMqDirectTest extends AorunEpointApplicationTests{
 
     @Autowired
     private HelloSender1 helloSender1;

@@ -257,7 +257,7 @@ public class WorkerGradeReportRestController {
                 System.out.println(ids.toString());
             }
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("workerIds  exception"+e.getMessage());
         }
 

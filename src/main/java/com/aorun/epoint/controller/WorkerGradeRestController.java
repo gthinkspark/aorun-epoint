@@ -11,6 +11,7 @@ import com.aorun.epoint.util.biz.ImagePropertiesConfig;
 import com.aorun.epoint.util.biz.WorkerMemberUtil;
 import com.aorun.epoint.util.jsonp.Jsonp;
 import com.aorun.epoint.util.jsonp.Jsonp_data;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +39,7 @@ public class WorkerGradeRestController {
 
     //1.成绩类型
     @RequestMapping(value = "/gradeType", method = RequestMethod.GET)
+    @ApiOperation("获取成绩类型列表")
     public Object gradeType() {
         List<Map<String, Object>> datamapList = new ArrayList<Map<String, Object>>();
         List<WorkerEpointConfig> certificateTypeWorkerEpointConfigList = workerEpointConfigService.findEpointConfigListByBizType(new Integer(2));
@@ -53,6 +55,7 @@ public class WorkerGradeRestController {
 
 
     //2.证书类型列表
+    @ApiOperation("获取成绩类型列表")
     @RequestMapping(value = "/certificateType", method = RequestMethod.GET)
     public Object certificateType( @RequestParam(name = "id", required = true, defaultValue = "") Integer id) {
 

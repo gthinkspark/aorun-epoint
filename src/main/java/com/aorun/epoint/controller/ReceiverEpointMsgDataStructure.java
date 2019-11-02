@@ -18,7 +18,7 @@ import java.util.List;
 @RabbitListener(queues = RabbitConfig.epointMsgDataStructureQueue)
 public class ReceiverEpointMsgDataStructure {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReceiverEpointMsgDataStructure.class);
 
     @Autowired
     private WorkerEpointConfigService workerEpointConfigService;

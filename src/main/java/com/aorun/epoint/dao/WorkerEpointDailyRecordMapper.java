@@ -1,5 +1,6 @@
 package com.aorun.epoint.dao;
 
+import com.aorun.epoint.dto.EpointDailyStatisticsDto;
 import com.aorun.epoint.dto.EpointRankDto;
 import com.aorun.epoint.model.WorkerEpointDailyRecord;
 import org.apache.ibatis.annotations.Param;
@@ -40,5 +41,9 @@ public interface WorkerEpointDailyRecordMapper {
     List<EpointRankDto> weekRankByPage(@Param("start") Integer start, @Param("limit") Integer limit,@Param("idList") String[] idList);
 
     List<EpointRankDto> totalRankByPage(@Param("start") Integer start, @Param("limit") Integer limit,@Param("idList") String[] idList);
+
+    List<EpointDailyStatisticsDto> totalEpointDailyStatistics();
+
+    Integer getTotalEpointDailyStatisticByScoreDate(@Param("scoreDate")String scoreDate);
 
 }

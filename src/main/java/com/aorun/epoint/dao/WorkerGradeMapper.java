@@ -1,5 +1,6 @@
 package com.aorun.epoint.dao;
 
+import com.aorun.epoint.dto.EpointStatisticsDto;
 import com.aorun.epoint.model.WorkerGrade;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,5 +21,10 @@ public interface WorkerGradeMapper {
 
 
     List<WorkerGrade> getWorkerGradeListByWorkerId(@Param("workerId") Long workerId,@Param("gradeTypeId") Integer gradeTypeId,  @Param("start") Integer start, @Param("limit") Integer limit);
+
+    EpointStatisticsDto getEpointStatistics(@Param("gradeTypeId") Long gradeTypeId);
+
+    int getTotalByCertificateCode(@Param("certificateCode") String certificateCode);
+
 
 }

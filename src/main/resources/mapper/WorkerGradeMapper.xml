@@ -20,6 +20,13 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="is_readed" jdbcType="INTEGER" property="isReaded" />
   </resultMap>
+
+  <resultMap id="EpointStatisticsBaseResultMap" type="com.aorun.epoint.dto.EpointStatisticsDto">
+    <result column="apply_num" jdbcType="BIGINT" property="applyNum" />
+    <result column="total_score" jdbcType="INTEGER" property="totalScore" />
+  </resultMap>
+
+
   <sql id="Base_Column_List">
     id, worker_id, name, telephone, id_card, company_name, bank_card, certificate_code, 
     certificate_name, obtain_score, materials_urls, status, grade_type_id, fail_reason, create_time,
@@ -245,6 +252,23 @@
     limit #{start},#{limit}
   </if>
 </select>
+
+
+  <select id="getEpointStatistics" resultMap="EpointStatisticsBaseResultMap">
+    select
+     count(1) as apply_num,sum(obtain_score)  as total_score
+    from t_worker_grade
+    where grade_type_id = #{gradeTypeId}
+  </select>
+
+
+
+
+  <select id="getTotalByCertificateCode" resultType="java.lang.Integer">
+    select  count(1)
+    from t_worker_grade
+    where certificate_code=#{certificateCode}
+  </select>
 
 
 </mapper>

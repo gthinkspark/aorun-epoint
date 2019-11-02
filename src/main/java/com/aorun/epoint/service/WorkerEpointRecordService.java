@@ -58,5 +58,8 @@ public interface WorkerEpointRecordService {
     List<WorkerEpointRecord>  findUniqueRecordByBizUniqueSignCode(Long workerId,String epointConfigCode,String bizUniqueSignCode);
 
 
+    //type==1-本日，2-本周，3-本月，4-本季度
+    Integer statisticsTotalByType(Integer type,String epointConfigCode);
+
 
 }
