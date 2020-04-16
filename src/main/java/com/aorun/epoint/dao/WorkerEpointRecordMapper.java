@@ -3,6 +3,7 @@ package com.aorun.epoint.dao;
 import com.aorun.epoint.model.WorkerEpointRecord;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface WorkerEpointRecordMapper {
@@ -19,6 +20,8 @@ public interface WorkerEpointRecordMapper {
     int updateByPrimaryKey(WorkerEpointRecord record);
 
     List<WorkerEpointRecord>  findUniqueRecord(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode);
+
+    List<WorkerEpointRecord>  findUniqueRecord30Day(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode, @Param("starTime") Date starTime);
 
     List<WorkerEpointRecord>  findTodayUniqueRecord(@Param("workerId") Long workerId, @Param("epointConfigCode")String epointConfigCode);
 

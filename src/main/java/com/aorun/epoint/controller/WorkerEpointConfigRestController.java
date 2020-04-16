@@ -5,6 +5,7 @@ import com.aorun.epoint.model.WorkerEpointConfig;
 import com.aorun.epoint.model.WorkerEpointRecord;
 import com.aorun.epoint.service.WorkerEpointConfigService;
 import com.aorun.epoint.service.WorkerEpointRecordService;
+import com.aorun.epoint.util.SignInUtil;
 import com.aorun.epoint.util.biz.WorkerMemberUtil;
 import com.aorun.epoint.util.jsonp.Jsonp_data;
 import org.apache.commons.logging.Log;
@@ -15,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 积分规则
@@ -34,7 +32,40 @@ public class WorkerEpointConfigRestController {
 
     @Autowired
     private WorkerEpointRecordService workerEpointRecordService;
+    @RequestMapping(value = "/getTaskInfo", method = RequestMethod.GET)
+    public Object getTaskInfo(@RequestParam(name = "sid", required = true, defaultValue = "") String sid,
+                                  @RequestParam(name = "taskCode", required = true, defaultValue = "") String taskCode) {
+        Long workerId = WorkerMemberUtil.getWorkerId(sid);
+        Map<String, Object> datamap = new HashMap<>();
+        List<WorkerEpointRecord>  workerEpointRecordList =  workerEpointRecordService.findTodayUniqueRecord(workerId,taskCode);//查找工会会员ID某个epointConfigCode是否添加过
 
+        if(workerEpointRecordList!=null&&workerEpointRecordList.size()>0){//可以添加
+            datamap.put("isComplete","1");//是否完成任务  1 完成，2未完成 3不处理任务
+            Calendar calendar  = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.set(Calendar.HOUR_OF_DAY,23);
+            calendar.set(Calendar.MINUTE,59);
+            calendar.set(Calendar.SECOND,59);
+            calendar.set(Calendar.MILLISECOND,999);
+            datamap.put("evenDay",getEvenDay(calendar.getTime(),workerId,taskCode));//连续签到天数
+        }else{
+            datamap.put("isComplete","2");//是否完成任务  1 完成，2未完成 3不处理任务
+            datamap.put("evenDay","0");//连续签到天数
+        }
+        return Jsonp_data.success(datamap);
+    }
+
+    private int getEvenDay(Date starTime,Long workerId,String taskCode){
+        List<WorkerEpointRecord> workerEpointRecordList = workerEpointRecordService.findUniqueRecord30Day(workerId, taskCode, starTime);
+        int continuousSignInDay = SignInUtil.getContinuousSignInDay(starTime,workerEpointRecordList);
+        if(continuousSignInDay==30){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(starTime);
+            calendar.add(Calendar.DAY_OF_YEAR,-30);
+            continuousSignInDay+=getEvenDay(calendar.getTime(),workerId,taskCode);
+        }
+        return continuousSignInDay;
+    }
 
     //产业工人激励办法H5链接接口
     @RequestMapping(value = "/getAwardRuleUrl", method = RequestMethod.GET)

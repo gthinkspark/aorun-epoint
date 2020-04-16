@@ -3,6 +3,7 @@ package com.aorun.epoint.service;
 
 import com.aorun.epoint.model.WorkerEpointRecord;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,6 +48,9 @@ public interface WorkerEpointRecordService {
 
     //查找工会会员ID某个epointConfigCode是否添加过
     List<WorkerEpointRecord>  findUniqueRecord(Long workerId,String epointConfigCode);
+
+    //查找工会会员ID某个epointConfigCode是否添加过
+    List<WorkerEpointRecord>  findUniqueRecord30Day(Long workerId, String epointConfigCode, Date starTime);
 
     //查找工会会员ID某个epointConfigCode当天是否添加过
     List<WorkerEpointRecord> findTodayUniqueRecord(Long workerId,String epointConfigCode);

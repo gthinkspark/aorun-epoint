@@ -1,8 +1,11 @@
 package com.aorun.epoint.util.biz.unioninfo;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 
 public class TESTOKHttp {
  
@@ -74,10 +77,10 @@ public class TESTOKHttp {
 //            user = gson.fromJson(str, new TypeToken<UserDto>() {
             //}
 
-//            Gson gson = new Gson();
-//            Map<String, Object> map =JsonToMapUtil.toMap(strBuffer.toString());
-//            unionInfo  = gson.fromJson(gson.toJson(map.get("data")),UnionInfo.class);
-//            System.out.println("unionInfo---->"+unionInfo);
+            Gson gson = new Gson();
+            Map<String, Object> map =JsonToMapUtil.toMap(strBuffer.toString());
+            unionInfo  = gson.fromJson(gson.toJson(map.get("data")),UnionInfo.class);
+            System.out.println("unionInfo---->"+unionInfo);
             return unionInfo;
         } catch (Exception e) {
             e.printStackTrace();

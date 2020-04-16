@@ -188,13 +188,13 @@ public class WorkerGradeStatisticsRestController {
     @RequestMapping(value = "/learnReportStatistics", method = RequestMethod.GET)
     public Object learnReportStatistics() {
         List<Map<String, Object>> datamapList = new ArrayList<Map<String, Object>>();
-        //List<EpointDailyStatisticsDto> epointDailyStatisticsDtoList = workerEpointDailyRecordService.totalEpointDailyStatistics();
+//        List<EpointDailyStatisticsDto> epointDailyStatisticsDtoList = workerEpointDailyRecordService.totalEpointDailyStatistics();
         for(int i=0;i<=6;i++){
             String scoreDate = this.getPastDate(i);
-            int totalScore = workerEpointDailyRecordService.getTotalEpointDailyStatisticByScoreDate(scoreDate);
+            Integer totalScore = workerEpointDailyRecordService.getTotalEpointDailyStatisticByScoreDate(scoreDate);
             Map<String, Object> datamap = new HashMap<>();
             datamap.put("scoreDate", scoreDate);//证书级别code
-            datamap.put("totalScore", totalScore);//证书级别名称
+            datamap.put("totalScore", null==totalScore?0:totalScore);//证书级别名称
             datamapList.add(datamap);
         }
         return Jsonp_data.success(datamapList);

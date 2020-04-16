@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,6 +48,11 @@ public class WorkerEpointRecordServiceImpl implements WorkerEpointRecordService 
     @Override
     public  List<WorkerEpointRecord>  findUniqueRecord(Long workerId, String epointConfigCode) {
         return workerEpointRecordMapper.findUniqueRecord(workerId,epointConfigCode);
+    }
+
+    @Override
+    public List<WorkerEpointRecord> findUniqueRecord30Day(Long workerId, String epointConfigCode, Date starTime) {
+        return workerEpointRecordMapper.findUniqueRecord30Day(workerId,epointConfigCode,starTime);
     }
 
     @Override

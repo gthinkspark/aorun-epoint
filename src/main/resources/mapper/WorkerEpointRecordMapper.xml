@@ -162,6 +162,17 @@
     where worker_id = #{workerId,jdbcType=BIGINT} and epoint_config_code = #{epointConfigCode,jdbcType=VARCHAR}
   </select>
 
+  <!--date('2020-04-15 18:35:25')   '2020-04-15' -->
+  <!--DATE_SUB('2020-04-15 12:06:45', INTERVAL 30 DAY)  '2020-03-16 12:06:45' -->
+  <select id="findUniqueRecord30Day"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_worker_epoint_record
+    where worker_id = #{workerId,jdbcType=BIGINT} and epoint_config_code = #{epointConfigCode,jdbcType=VARCHAR} and
+    <![CDATA[ DATE_SUB(#{starTime}, INTERVAL 30 DAY) < date(obtain_time) and obtain_time <= #{starTime}]]>
+    order by obtain_time desc
+  </select>
+
 
 
   <select id="findUniqueRecordByBizUniqueSignCode"  resultMap="BaseResultMap">
