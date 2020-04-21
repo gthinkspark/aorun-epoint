@@ -41,24 +41,24 @@ public class WorkerEpointConfigRestController {
 
         if(workerEpointRecordList!=null&&workerEpointRecordList.size()>0){//可以添加
             datamap.put("isComplete","1");//是否完成任务  1 完成，2未完成 3不处理任务
-            Calendar calendar  = Calendar.getInstance();
-            calendar.setTime(new Date());
-            calendar.set(Calendar.HOUR_OF_DAY,23);
-            calendar.set(Calendar.MINUTE,59);
-            calendar.set(Calendar.SECOND,59);
-            calendar.set(Calendar.MILLISECOND,999);
-            datamap.put("evenDay",getEvenDay(calendar.getTime(),workerId,taskCode));//连续签到天数
+
         }else{
             datamap.put("isComplete","2");//是否完成任务  1 完成，2未完成 3不处理任务
-            datamap.put("evenDay","0");//连续签到天数
         }
+        Calendar calendar  = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY,23);
+        calendar.set(Calendar.MINUTE,59);
+        calendar.set(Calendar.SECOND,59);
+        calendar.set(Calendar.MILLISECOND,999);
+        datamap.put("evenDay",getEvenDay(calendar.getTime(),workerId,taskCode));//连续签到天数
         return Jsonp_data.success(datamap);
     }
 
     private int getEvenDay(Date starTime,Long workerId,String taskCode){
         List<WorkerEpointRecord> workerEpointRecordList = workerEpointRecordService.findUniqueRecord30Day(workerId, taskCode, starTime);
         int continuousSignInDay = SignInUtil.getContinuousSignInDay(starTime,workerEpointRecordList);
-        if(continuousSignInDay==30){
+        if(continuousSignInDay>=29){
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(starTime);
             calendar.add(Calendar.DAY_OF_YEAR,-30);
